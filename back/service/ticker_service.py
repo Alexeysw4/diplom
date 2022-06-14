@@ -13,7 +13,7 @@ class TickerService:
         for ticker_name in self.tickers.keys():
             tick_count = float(self.tickers[ticker_name])
             tick_info = yf.Ticker(ticker_name).info
-            sector = self.translator.translate(tick_info.get("sector", "Other"))
+            sector = tick_info.get("sector", "Other")
             if sector not in sectors:
                 sectors[sector] = tick_count
             else:

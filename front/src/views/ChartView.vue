@@ -10,6 +10,19 @@ v-container(:fill-height="!!error" :fluid="!!error")
           v-col.grow {{ error || 'Ошибка :(' }}
           v-col.shrink
             v-btn(@click="refresh") Назад
+          v-col.shrink(v-if="chartStocks && seriesStocks")
+            v-dialog(v-model="dialog" height="900" width="1000" )
+              template(v-slot:activator="{ on, attrs }")
+                v-btn(v-bind="attrs" v-on="on") Детали
+              v-card
+                v-card-title Цены акций
+                v-divider
+                apexchart(
+                  :options="chartStocks"
+                  :series="seriesStocks"
+                  height="500"
+                  width="900"
+                )
   template(v-else)
     v-row(justify="space-between")
       v-col(cols="4")
@@ -35,24 +48,24 @@ v-container(:fill-height="!!error" :fluid="!!error")
           v-list-item(v-for="(item, idx) in seriesComputed" :key="idx")
             p #[strong {{ idx+1 }}]. {{ chartOptionsStocks.labels[idx].toLocaleString() }} - {{ item.toLocaleString() }}% #[i (]#[i {{ valuesStocks.at(idx).toLocaleString() }}] #[i {{ getNounStocks(valuesStocks.at(idx)) }})]
         p #[b Остаток]: {{ remains.toLocaleString() }} руб.
-    v-row(v-if="expectedAnnualReturn || expectedAnnualReturn || sharpeRatio")
-      h3 Статистика
-      v-simple-table
-       template(v-slot:default)
-        thead
-          tr
-            th Название параметра
-            th Значение
-        tbody
-          tr(v-if="expectedAnnualReturn")
-            td Ожидаемый годовой доход
-            td {{ (expectedAnnualReturn * 100).toFixed(2) }} %
-          tr(v-if="annualVolatility")
-            td Годовая волатильность
-            td {{ (annualVolatility * 100).toFixed(2) }} %
-          tr(v-if="sharpeRatio")
-            td Коэффициент Шарпа
-            td {{ sharpeRatio }}
+    //v-row(v-if="expectedAnnualReturn || expectedAnnualReturn || sharpeRatio")
+    //  h3 Статистика
+    //  v-simple-table
+    //   template(v-slot:default)
+    //    thead
+    //      tr
+    //        th Название параметра
+    //        th Значение
+    //    tbody
+    //      tr(v-if="expectedAnnualReturn")
+    //        td Ожидаемый годовой доход
+    //        td {{ (expectedAnnualReturn * 100).toFixed(2) }} %
+    //      tr(v-if="annualVolatility")
+    //        td Годовая волатильность
+    //        td {{ (annualVolatility * 100).toFixed(2) }} %
+    //      tr(v-if="sharpeRatio")
+    //        td Коэффициент Шарпа
+    //        td {{ sharpeRatio }}
     v-row
       apexchart(
         :options="chartStocks"
@@ -180,7 +193,8 @@ export default {
             }
           }
         }
-      }
+      },
+      dialog: false
     }
   },
   methods: {

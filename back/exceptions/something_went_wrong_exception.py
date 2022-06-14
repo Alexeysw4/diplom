@@ -1,9 +1,5 @@
-from fastapi import HTTPException
+from .base_exception import BaseHTTPException
 
 
-class SomethingWentWrongException(HTTPException):
-    def __init__(self,) -> None:
-        super().__init__(
-            status_code=400,
-            detail="Что-то пошло не так :("
-        )
+class SomethingWentWrongException(BaseHTTPException):
+    detail_ = "Что-то пошло не так :("

@@ -1,9 +1,5 @@
-from fastapi import HTTPException
+from .base_exception import BaseHTTPException
 
 
-class PredictionNegativeStocksException(HTTPException):
-    def __init__(self,) -> None:
-        super().__init__(
-            status_code=400,
-            detail="Модель спрогнозировала отрицательные цены на акции:("
-        )
+class PredictionNegativeStocksException(BaseHTTPException):
+    detail_ = "Модель спрогнозировала отрицательные цены на акции:("

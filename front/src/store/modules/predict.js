@@ -94,7 +94,10 @@ export default {
           state.commit('UPDATE_SHARPE_RATIO', response.data.sharpe_ratio)
           resolve(response.data)
         }).catch((error) => {
-          state.commit('UPDATE_ERROR', error.response.data.detail)
+          state.commit('UPDATE_ERROR', error.response.data.detail.error)
+          state.commit('UPDATE_SERIES_STOCKS', error.response.data.detail.series_stocks)
+          state.commit('UPDATE_X_ANNOTATIONS_STOCKS', error.response.data.detail.x_annotations_stocks)
+          state.commit('UPDATE_X_AXIS_STOCKS', error.response.data.detail.xaxis_stocks)
           reject(error.response.data)
         })
       })
